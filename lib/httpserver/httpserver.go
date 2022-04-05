@@ -20,7 +20,7 @@ type Server interface {
 
 func New(t enums.ServerType) Server {
 	if t.IsValid() {
-		switch t.ToUpper() {
+		switch enums.ToUpper(t) {
 		case enums.Gin:
 			return ginserver.New()
 		case enums.Fiber:

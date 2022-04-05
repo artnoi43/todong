@@ -1,7 +1,5 @@
 package enums
 
-import "strings"
-
 type (
 	Status     string
 	StoreType  string
@@ -29,37 +27,25 @@ const (
 )
 
 func (s Status) IsValid() bool {
-	switch s.ToUpper() {
+	switch ToUpper(s) {
 	case InProgress, Completed:
 		return true
 	}
 	return false
 }
 
-func (s Status) ToUpper() Status {
-	return Status(strings.ToUpper(string(s)))
-}
-
 func (s StoreType) IsValid() bool {
-	switch s.ToUpper() {
+	switch ToUpper(s) {
 	case Gorm, Redis:
 		return true
 	}
 	return false
 }
 
-func (s StoreType) ToUpper() StoreType {
-	return StoreType(strings.ToUpper(string(s)))
-}
-
 func (s ServerType) IsValid() bool {
-	switch s.ToUpper() {
+	switch ToUpper(s) {
 	case Gin, Fiber, Gorilla:
 		return true
 	}
 	return false
-}
-
-func (s ServerType) ToUpper() ServerType {
-	return ServerType(strings.ToUpper(string(s)))
 }

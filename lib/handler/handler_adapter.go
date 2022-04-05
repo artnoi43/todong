@@ -59,7 +59,7 @@ func NewAdaptor(t enums.ServerType, dataGateway store.DataGateway, conf *middlew
 	var g *ginhandler.GinHandler
 	var f *fiberhandler.FiberHandler
 	var m *gorillahandler.GorillaHandler
-	switch t.ToUpper() {
+	switch enums.ToUpper(t) {
 	case enums.Gin:
 		g = ginhandler.New(dataGateway, conf)
 		mapGin, _, _ := MapHandlers(g, f, m)
