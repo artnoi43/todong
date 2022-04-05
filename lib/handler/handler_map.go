@@ -18,11 +18,11 @@ func MapHandlers(
 	f *fiberhandler.FiberHandler,
 	m *gorillahandler.GorillaHandler,
 ) (
-	map[string]func(*gin.Context),
-	map[string]func(*fiber.Ctx) error,
-	map[string]http.HandlerFunc,
+	map[enums.Endpoint]func(*gin.Context),
+	map[enums.Endpoint]func(*fiber.Ctx) error,
+	map[enums.Endpoint]http.HandlerFunc,
 ) {
-	MapGinHandlers := map[string]func(*gin.Context){
+	MapGinHandlers := map[enums.Endpoint]func(*gin.Context){
 		enums.HandlerRegister:    g.Register,
 		enums.HandlerLogin:       g.Login,
 		enums.HandlerCreateTodo:  g.CreateTodo,
@@ -33,7 +33,7 @@ func MapHandlers(
 		enums.HandlerDeleteUser:  g.DeleteUser,
 		enums.HandlerTestAuth:    g.TestAuth,
 	}
-	MapFiberHandlers := map[string]func(*fiber.Ctx) error{
+	MapFiberHandlers := map[enums.Endpoint]func(*fiber.Ctx) error{
 		enums.HandlerRegister:    f.Register,
 		enums.HandlerLogin:       f.Login,
 		enums.HandlerCreateTodo:  f.CreateTodo,
@@ -43,7 +43,7 @@ func MapHandlers(
 		enums.HandlerNewPassword: f.NewPassword,
 		enums.HandlerDeleteUser:  f.DeleteUser,
 	}
-	MapGorillaHandlers := map[string]http.HandlerFunc{
+	MapGorillaHandlers := map[enums.Endpoint]http.HandlerFunc{
 		enums.HandlerRegister:   m.Register,
 		enums.HandlerLogin:      m.Login,
 		enums.HandlerCreateTodo: m.CreateTodo,

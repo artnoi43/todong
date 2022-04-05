@@ -1,13 +1,15 @@
 package enums
 
+type Endpoint string
+
 var (
-	HandlerRegister    = "register"
-	HandlerLogin       = "login"
-	HandlerCreateTodo  = "create_todo"
-	HandlerGetTodo     = "get_todo"
-	HandlerUpdateTodo  = "update_todo"
-	HandlerDeleteTodo  = "delete_todo"
-	HandlerNewPassword = "new_password"
-	HandlerDeleteUser  = "delete_user"
-	HandlerTestAuth    = "test_auth"
+	HandlerRegister    Endpoint = "register"
+	HandlerLogin       Endpoint = "login"
+	HandlerCreateTodo  Endpoint = "create_todo"
+	HandlerGetTodo     Endpoint = "get_todo"
+	HandlerUpdateTodo  Endpoint = "update_todo"
+	HandlerDeleteTodo  Endpoint = "delete_todo"
+	HandlerNewPassword Endpoint = "new_password"
+	HandlerDeleteUser  Endpoint = "delete_user"
+	HandlerTestAuth    Endpoint = "test_auth"
 )
