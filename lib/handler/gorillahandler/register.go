@@ -51,7 +51,7 @@ func (h *GorillaHandler) Register(w http.ResponseWriter, r *http.Request) {
 		registerFailed()
 		return
 	}
-	w.WriteHeader(http.StatusOK)
+	w.WriteHeader(http.StatusCreated)
 	respEncoder.Encode(map[string]interface{}{
 		"username": user.Username,
 		"userUuid": user.UUID,

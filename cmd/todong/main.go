@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"log"
 	"os"
 	"os/signal"
@@ -56,6 +57,7 @@ func main() {
 	// main() will block here, waiting for value to be received from sigChan
 	<-sigChan
 	log.Println("Shutting down data store")
+	server.Shutdown(context.Background())
 	dataGateway.Shutdown()
 	log.Println("Data store shutdown gracefully")
 	os.Exit(0)

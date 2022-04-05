@@ -44,8 +44,10 @@ func MapHandlers(
 		enums.HandlerDeleteUser:  f.DeleteUser,
 	}
 	MapGorillaHandlers := map[string]http.HandlerFunc{
-		enums.HandlerRegister: m.Register,
-		enums.HandlerLogin:    m.Login,
+		enums.HandlerRegister:   m.Register,
+		enums.HandlerLogin:      m.Login,
+		enums.HandlerCreateTodo: m.CreateTodo,
+		enums.HandlerGetTodo:    m.GetTodo,
 	}
 	return MapGinHandlers, MapFiberHandlers, MapGorillaHandlers
 }
