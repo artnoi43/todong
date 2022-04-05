@@ -56,9 +56,9 @@ func main() {
 
 	// main() will block here, waiting for value to be received from sigChan
 	<-sigChan
-	log.Println("Shutting down data store")
+	log.Println("Shutting down server and data store")
 	server.Shutdown(context.Background())
 	dataGateway.Shutdown()
-	log.Println("Data store shutdown gracefully")
+	log.Println("Server and data store shutdown gracefully")
 	os.Exit(0)
 }
