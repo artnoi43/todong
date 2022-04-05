@@ -22,7 +22,7 @@ func (h *FiberHandler) Register(c *fiber.Ctx) error {
 
 	ctx := c.Context()
 	var targetUser datamodel.User
-	_ = h.DataGateway.GetUserByUsername(ctx, req.Username, &targetUser)
+	_ = h.dataGateway.GetUserByUsername(ctx, req.Username, &targetUser)
 	if targetUser.Username != "" {
 		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
 			"duplicate username": req.Username,
@@ -40,7 +40,7 @@ func (h *FiberHandler) Register(c *fiber.Ctx) error {
 		Username: req.Username,
 		Password: pw,
 	}
-	if err := h.DataGateway.CreateUser(ctx, &user); err != nil {
+	if err := h.dataGateway.CreateUser(ctx, &user); err != nil {
 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
 			"error": fmt.Sprintf("failed to create user: %s", req.Username),
 		})

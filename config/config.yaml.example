@@ -2,7 +2,7 @@ listen_address: localhost:8000
 server: fiber
 store: redis
 middleware:
-  secret: qwerty
+  secret_key: qwerty
 postgres:
   host: localhost
   port: 5432

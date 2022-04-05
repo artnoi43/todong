@@ -20,8 +20,9 @@ const (
 	Redis StoreType = "REDIS"
 
 	// HTTP web framework
-	Gin   ServerType = "GIN"
-	Fiber ServerType = "FIBER"
+	Gin     ServerType = "GIN"
+	Fiber   ServerType = "FIBER"
+	Gorilla ServerType = "GORILLA"
 
 	// Capitalize to make in obvious in the code
 	POSTGRES_MAX_STRLEN int = 65535
@@ -53,7 +54,7 @@ func (s StoreType) ToUpper() StoreType {
 
 func (s ServerType) IsValid() bool {
 	switch s.ToUpper() {
-	case Gin, Fiber:
+	case Gin, Fiber, Gorilla:
 		return true
 	}
 	return false

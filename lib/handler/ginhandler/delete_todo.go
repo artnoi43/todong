@@ -26,7 +26,7 @@ func (h *GinHandler) DeleteTodo(c *gin.Context) {
 	// Delete data from DB
 	ctx := c.Request.Context()
 	var targetTodo datamodel.Todo
-	err = h.DataGateway.GetOneTodo(ctx, &datamodel.Todo{
+	err = h.dataGateway.GetOneTodo(ctx, &datamodel.Todo{
 		UserUUID: userInfo.UserUuid,
 		UUID:     uuid,
 	}, &targetTodo)
@@ -46,7 +46,7 @@ func (h *GinHandler) DeleteTodo(c *gin.Context) {
 		})
 		return
 	}
-	if err = h.DataGateway.DeleteTodo(ctx, &datamodel.Todo{
+	if err = h.dataGateway.DeleteTodo(ctx, &datamodel.Todo{
 		UserUUID: userInfo.UserUuid,
 		UUID:     uuid,
 	}); err != nil {

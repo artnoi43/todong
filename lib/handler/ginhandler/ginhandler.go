@@ -6,6 +6,13 @@ import (
 )
 
 type GinHandler struct {
-	DataGateway store.DataGateway
-	Config      *middleware.Config
+	dataGateway store.DataGateway
+	config      *middleware.Config
+}
+
+func New(d store.DataGateway, c *middleware.Config) *GinHandler {
+	return &GinHandler{
+		dataGateway: d,
+		config:      c,
+	}
 }

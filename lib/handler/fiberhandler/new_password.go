@@ -38,7 +38,7 @@ func (h *FiberHandler) NewPassword(c *fiber.Ctx) error {
 	// Get user from DB
 	ctx := c.Context()
 	var targetUser datamodel.User
-	if err := h.DataGateway.GetUserByUuid(ctx, uuid, &targetUser); err != nil {
+	if err := h.dataGateway.GetUserByUuid(ctx, uuid, &targetUser); err != nil {
 		// Record not found
 		if errors.Is(err, store.ErrRecordNotFound) {
 			return c.Status(http.StatusNotFound).JSON(fiber.Map{
@@ -65,7 +65,7 @@ func (h *FiberHandler) NewPassword(c *fiber.Ctx) error {
 		})
 	}
 	// Update data in DB
-	if err := h.DataGateway.ChangePassword(ctx, &targetUser, pw); err != nil {
+	if err := h.dataGateway.ChangePassword(ctx, &targetUser, pw); err != nil {
 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
 			"errors": "failed to change password",
 		})

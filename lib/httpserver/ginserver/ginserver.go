@@ -1,6 +1,10 @@
 package ginserver
 
-import "github.com/gin-gonic/gin"
+import (
+	"context"
+
+	"github.com/gin-gonic/gin"
+)
 
 type ginServer struct {
 	engine *gin.Engine
@@ -13,4 +17,8 @@ func New() *ginServer {
 	return &ginServer{
 		engine: r,
 	}
+}
+
+func (s *ginServer) Shutdown(ctx context.Context) {
+	s.Shutdown(ctx)
 }

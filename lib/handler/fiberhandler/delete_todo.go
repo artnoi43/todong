@@ -25,7 +25,7 @@ func (h *FiberHandler) DeleteTodo(c *fiber.Ctx) error {
 	// Delete data from DB
 	ctx := c.Context()
 	var targetTodo datamodel.Todo
-	err = h.DataGateway.GetOneTodo(ctx, &datamodel.Todo{
+	err = h.dataGateway.GetOneTodo(ctx, &datamodel.Todo{
 		UserUUID: userInfo.UserUuid,
 		UUID:     uuid,
 	}, &targetTodo)
@@ -44,7 +44,7 @@ func (h *FiberHandler) DeleteTodo(c *fiber.Ctx) error {
 		})
 
 	}
-	if err = h.DataGateway.DeleteTodo(ctx, &datamodel.Todo{
+	if err = h.dataGateway.DeleteTodo(ctx, &datamodel.Todo{
 		UserUUID: userInfo.UserUuid,
 		UUID:     uuid,
 	}); err != nil {

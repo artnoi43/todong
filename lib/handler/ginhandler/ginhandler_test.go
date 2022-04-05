@@ -10,8 +10,8 @@ import (
 // Use our manually written store.testDataGateway
 func newTestHandler() *GinHandler {
 	return &GinHandler{
-		DataGateway: store.NewTestDataGateway(),
-		Config: &middleware.Config{
+		dataGateway: store.NewTestDataGateway(),
+		config: &middleware.Config{
 			SecretKey: "qwerty",
 		},
 	}

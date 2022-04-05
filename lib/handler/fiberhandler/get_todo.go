@@ -30,11 +30,11 @@ func (h *FiberHandler) GetTodo(c *fiber.Ctx) error {
 	uuid := c.Params("uuid")
 	if len(uuid) == 0 {
 		getAll = true
-		err = h.DataGateway.GetUserTodos(ctx, &datamodel.Todo{
+		err = h.dataGateway.GetUserTodos(ctx, &datamodel.Todo{
 			UserUUID: userInfo.UserUuid,
 		}, &targetTodos)
 	} else {
-		err = h.DataGateway.GetOneTodo(ctx, &datamodel.Todo{
+		err = h.dataGateway.GetOneTodo(ctx, &datamodel.Todo{
 			UserUUID: userInfo.UserUuid,
 			UUID:     uuid,
 		}, &targetTodo)

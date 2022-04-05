@@ -72,7 +72,7 @@ func (h *GinHandler) CreateTodo(c *gin.Context) {
 	}
 
 	// Write to store
-	if err := h.DataGateway.CreateTodo(c.Request.Context(), todo); err != nil {
+	if err := h.dataGateway.CreateTodo(c.Request.Context(), todo); err != nil {
 		c.AbortWithStatusJSON(
 			http.StatusInternalServerError,
 			gin.H{

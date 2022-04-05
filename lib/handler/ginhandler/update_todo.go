@@ -29,7 +29,7 @@ func (h *GinHandler) UpdateTodo(c *gin.Context) {
 	// Find targetTodo in database
 	ctx := c.Request.Context()
 	var targetTodo datamodel.Todo
-	if err := h.DataGateway.GetOneTodo(ctx, &datamodel.Todo{
+	if err := h.dataGateway.GetOneTodo(ctx, &datamodel.Todo{
 		UserUUID: userInfo.UserUuid,
 		UUID:     uuid,
 	}, &targetTodo); err != nil {
@@ -99,7 +99,7 @@ func (h *GinHandler) UpdateTodo(c *gin.Context) {
 	compareStatus(targetTodo.Status, enums.Status(updatesReq.Status), &u.Status)
 
 	// Update data in DB
-	if err := h.DataGateway.UpdateTodo(ctx, &datamodel.Todo{
+	if err := h.dataGateway.UpdateTodo(ctx, &datamodel.Todo{
 		UserUUID: userInfo.UserUuid,
 		UUID:     uuid,
 	}, &u); err != nil {

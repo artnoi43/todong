@@ -49,8 +49,8 @@ func main() {
 	// Wrap server.Serve() in goroutine so that we can have graceful shutdown
 	// and server concurrently listening.
 	go func() {
-		log.Println("App started")
-		log.Fatal(server.Serve(conf.Port))
+		log.Printf("Server started on %s", conf.Address)
+		log.Fatal(server.Serve(conf.Address))
 	}()
 
 	// main() will block here, waiting for value to be received from sigChan

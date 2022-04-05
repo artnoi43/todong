@@ -31,11 +31,11 @@ func (h *GinHandler) GetTodo(c *gin.Context) {
 	// If UUID is not given as URL parameter, find all todo records for user
 	if len(uuid) == 0 {
 		getAll = true
-		err = h.DataGateway.GetUserTodos(ctx, &datamodel.Todo{
+		err = h.dataGateway.GetUserTodos(ctx, &datamodel.Todo{
 			UserUUID: userInfo.UserUuid,
 		}, &targetTodos)
 	} else {
-		err = h.DataGateway.GetOneTodo(ctx, &datamodel.Todo{
+		err = h.dataGateway.GetOneTodo(ctx, &datamodel.Todo{
 			UserUUID: userInfo.UserUuid,
 			UUID:     uuid,
 		}, &targetTodo)

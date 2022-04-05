@@ -20,6 +20,7 @@ require (
 	github.com/gofiber/fiber/v2 v2.30.0
 	github.com/gofiber/jwt/v3 v3.2.9
 	github.com/golang-jwt/jwt/v4 v4.4.0
+	github.com/gorilla/mux v1.8.0
 )
 
 require (

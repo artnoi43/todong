@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 
 	"github.com/artnoi43/todong/datamodel"
@@ -26,7 +25,7 @@ func (h *GinHandler) Login(c *gin.Context) {
 
 	ctx := c.Request.Context()
 	var user datamodel.User
-	if err := h.DataGateway.GetUserByUsername(ctx, req.Username, &user); err != nil {
+	if err := h.dataGateway.GetUserByUsername(ctx, req.Username, &user); err != nil {
 		if !errors.Is(err, store.ErrRecordNotFound) {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
 				"error": "login failed",
@@ -50,16 +49,7 @@ func (h *GinHandler) Login(c *gin.Context) {
 		})
 		return
 	}
-	// Generate claims (JWT info)
-	iss := user.UUID
-	// TODO: investigate if Local() is actually needed
-	exp := time.Now().Add(24 * time.Hour).Local()
-	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.StandardClaims{
-		Issuer:    iss,
-		ExpiresAt: exp.Unix(),
-	})
-	// Generate JWT token from claims
-	token, err := claims.SignedString([]byte(h.Config.SecretKey))
+	token, exp, err := utils.NewJwtToken(user.UUID, []byte(h.config.SecretKey))
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
 			"status": "failed to generate token",
@@ -67,11 +57,18 @@ func (h *GinHandler) Login(c *gin.Context) {
 		})
 		return
 	}
-	c.JSON(http.StatusAccepted, gin.H{
-		"status":   "successful login",
-		"username": user.Username,
-		"userUuid": iss,
-		"expire":   exp.String(),
-		"token":    token,
+	resp := internal.LoginResponse(struct {
+		Status   string
+		Username string
+		UserUuid string
+		Exp      time.Time
+		Token    string
+	}{
+		Status:   "login successful",
+		Username: user.Username,
+		UserUuid: user.UUID,
+		Exp:      exp,
+		Token:    token,
 	})
+	c.JSON(http.StatusOK, resp)
 }

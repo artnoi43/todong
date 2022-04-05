@@ -66,7 +66,7 @@ func (h *FiberHandler) CreateTodo(c *fiber.Ctx) error {
 	}
 
 	// Write to store
-	if err := h.DataGateway.CreateTodo(c.Context(), todo); err != nil {
+	if err := h.dataGateway.CreateTodo(c.Context(), todo); err != nil {
 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
 			"status": "todo creation failed",
 			"error":  err.Error(),

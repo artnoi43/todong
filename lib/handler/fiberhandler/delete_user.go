@@ -22,7 +22,7 @@ func (h *FiberHandler) DeleteUser(c *fiber.Ctx) error {
 	uuid := userInfo.UserUuid
 	ctx := c.Context()
 	// Delete data from DB
-	if err = h.DataGateway.DeleteUser(ctx, &datamodel.User{
+	if err = h.dataGateway.DeleteUser(ctx, &datamodel.User{
 		UUID: uuid,
 	}); err != nil {
 		if errors.Is(err, store.ErrRecordNotFound) {

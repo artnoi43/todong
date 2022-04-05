@@ -6,6 +6,13 @@ import (
 )
 
 type FiberHandler struct {
-	DataGateway store.DataGateway
-	Config      *middleware.Config
+	dataGateway store.DataGateway
+	config      *middleware.Config
+}
+
+func New(d store.DataGateway, c *middleware.Config) *FiberHandler {
+	return &FiberHandler{
+		dataGateway: d,
+		config:      c,
+	}
 }

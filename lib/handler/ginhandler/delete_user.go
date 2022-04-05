@@ -25,7 +25,7 @@ func (h *GinHandler) DeleteUser(c *gin.Context) {
 	uuid := userInfo.UserUuid
 	ctx := c.Request.Context()
 	// Delete data from DB
-	if err = h.DataGateway.DeleteUser(ctx, &datamodel.User{
+	if err = h.dataGateway.DeleteUser(ctx, &datamodel.User{
 		UUID: uuid,
 	}); err != nil {
 		if errors.Is(err, store.ErrRecordNotFound) {

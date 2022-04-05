@@ -28,7 +28,7 @@ func (h *FiberHandler) UpdateTodo(c *fiber.Ctx) error {
 	// Find targetTodo in database
 	ctx := c.Context()
 	var targetTodo datamodel.Todo
-	if err := h.DataGateway.GetOneTodo(ctx, &datamodel.Todo{
+	if err := h.dataGateway.GetOneTodo(ctx, &datamodel.Todo{
 		UserUUID: userInfo.UserUuid,
 		UUID:     uuid,
 	}, &targetTodo); err != nil {
@@ -93,7 +93,7 @@ func (h *FiberHandler) UpdateTodo(c *fiber.Ctx) error {
 	compareStatus(targetTodo.Status, enums.Status(updatesReq.Status), &u.Status)
 
 	// Update data in DB
-	if err := h.DataGateway.UpdateTodo(ctx, &datamodel.Todo{
+	if err := h.dataGateway.UpdateTodo(ctx, &datamodel.Todo{
 		UserUUID: userInfo.UserUuid,
 		UUID:     uuid,
 	}, &u); err != nil {

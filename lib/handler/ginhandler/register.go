@@ -24,7 +24,7 @@ func (h *GinHandler) Register(c *gin.Context) {
 	// Check for existing username in Postgres
 	ctx := c.Request.Context()
 	var user datamodel.User
-	_ = h.DataGateway.GetUserByUsername(ctx, req.Username, &user)
+	_ = h.dataGateway.GetUserByUsername(ctx, req.Username, &user)
 	// If retrived user.Username is not zero-valued,
 	// it means the username was used
 	if user.Username != "" {
@@ -45,7 +45,7 @@ func (h *GinHandler) Register(c *gin.Context) {
 		Username: req.Username,
 		Password: pw,
 	}
-	if err := h.DataGateway.CreateUser(ctx, &user); err != nil {
+	if err := h.dataGateway.CreateUser(ctx, &user); err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
 			"error": fmt.Sprintf("failed to create user: %s", req.Username),
 		})

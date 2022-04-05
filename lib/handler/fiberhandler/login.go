@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/dgrijalva/jwt-go"
 	"github.com/gofiber/fiber/v2"
 
 	"github.com/artnoi43/todong/datamodel"
@@ -25,7 +24,7 @@ func (h *FiberHandler) Login(c *fiber.Ctx) error {
 
 	ctx := c.Context()
 	var user datamodel.User
-	if err := h.DataGateway.GetUserByUsername(ctx, req.Username, &user); err != nil {
+	if err := h.dataGateway.GetUserByUsername(ctx, req.Username, &user); err != nil {
 		if !errors.Is(err, store.ErrRecordNotFound) {
 			return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
 				"error": "login failed",
@@ -46,27 +45,24 @@ func (h *FiberHandler) Login(c *fiber.Ctx) error {
 			"code":   2,
 		})
 	}
-	// Generate claims (JWT info)
-	iss := user.UUID
-	// TODO: investigate if Local() is actually needed
-	exp := time.Now().Add(24 * time.Hour).Local()
-	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.StandardClaims{
-		Issuer:    iss,
-		ExpiresAt: exp.Unix(),
-	})
-	// Generate JWT token from claims
-	token, err := claims.SignedString([]byte(h.Config.SecretKey))
+	token, exp, err := utils.NewJwtToken(user.UUID, []byte(h.config.SecretKey))
 	if err != nil {
 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
-			"status": "failed to generate token",
-			"error":  err.Error(),
+			"error": "login failed",
 		})
 	}
-	return c.Status(http.StatusAccepted).JSON(fiber.Map{
-		"status":   "successful login",
-		"username": user.Username,
-		"userUuid": iss,
-		"expire":   exp.String(),
-		"token":    token,
+	resp := internal.LoginResponse(struct {
+		Status   string
+		Username string
+		UserUuid string
+		Exp      time.Time
+		Token    string
+	}{
+		Status:   "login successful",
+		Username: user.Username,
+		UserUuid: user.UUID,
+		Exp:      exp,
+		Token:    token,
 	})
+	return c.Status(http.StatusOK).JSON(resp)
 }

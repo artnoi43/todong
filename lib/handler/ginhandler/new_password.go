@@ -41,7 +41,7 @@ func (h *GinHandler) NewPassword(c *gin.Context) {
 	// Get user from DB
 	ctx := c.Request.Context()
 	var targetUser datamodel.User
-	if err := h.DataGateway.GetUserByUuid(ctx, uuid, &targetUser); err != nil {
+	if err := h.dataGateway.GetUserByUuid(ctx, uuid, &targetUser); err != nil {
 		// Record not found
 		if errors.Is(err, store.ErrRecordNotFound) {
 			c.AbortWithStatusJSON(http.StatusNotFound, gin.H{
@@ -72,7 +72,7 @@ func (h *GinHandler) NewPassword(c *gin.Context) {
 		return
 	}
 	// Update data in DB
-	if err := h.DataGateway.ChangePassword(ctx, &targetUser, pw); err != nil {
+	if err := h.dataGateway.ChangePassword(ctx, &targetUser, pw); err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
 			"errors": "failed to change password",
 		})
