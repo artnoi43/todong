@@ -5,9 +5,10 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/gorilla/mux"
+
 	"github.com/artnoi43/todong/datamodel"
 	"github.com/artnoi43/todong/lib/store"
-	"github.com/gorilla/mux"
 )
 
 func (h *GorillaHandler) GetTodo(w http.ResponseWriter, r *http.Request) {
