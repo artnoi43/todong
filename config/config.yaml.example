@@ -1,5 +1,5 @@
 listen_address: localhost:8000
-server: fiber
+server: fiber # or gin, gorilla
 store: redis
 middleware:
   secret_key: qwerty

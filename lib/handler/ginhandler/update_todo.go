@@ -74,29 +74,8 @@ func (h *GinHandler) UpdateTodo(c *gin.Context) {
 		return
 	}
 
-	// Use previous values if eq null string
-	compareVal := func(old, new string, target *string) {
-		var nullString string
-		if new == nullString {
-			*target = old
-			return
-		}
-		*target = new
-	}
-	compareStatus := func(old, new enums.Status, target *enums.Status) {
-		if new.IsValid() {
-			*target = new
-		}
-		*target = old
-	}
-	var u datamodel.Todo // Updated to-do
-	compareVal(targetTodo.UUID, uuid, &u.UUID)
-	compareVal(targetTodo.UserUUID, "", &u.UserUUID)
-	compareVal(targetTodo.Title, updatesReq.Title, &u.Title)
-	compareVal(targetTodo.Description, updatesReq.Description, &u.Description)
-	compareVal(targetTodo.TodoDate, updatesReq.TodoDate, &u.TodoDate)
-	compareVal(targetTodo.Image, imgStrReq, &u.Image)
-	compareStatus(targetTodo.Status, enums.Status(updatesReq.Status), &u.Status)
+	var u datamodel.Todo // This to-do will be written to data store
+	utils.UpdatedTodo(uuid, imgStrReq, &updatesReq, &targetTodo, &u)
 
 	// Update data in DB
 	if err := h.dataGateway.UpdateTodo(ctx, &datamodel.Todo{
