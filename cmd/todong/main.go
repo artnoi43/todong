@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"sync"
 	"syscall"
 
 	"github.com/artnoi43/todong/config"
@@ -55,10 +56,17 @@ func main() {
 	}()
 
 	// main() will block here, waiting for value to be received from sigChan
-	<-sigChan
-	log.Println("Shutting down server and data store")
-	server.Shutdown(context.Background())
-	dataGateway.Shutdown()
-	log.Println("Server and data store shutdown gracefully")
+	var wg sync.WaitGroup
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		<-sigChan
+		log.Println("Shutting down server and data store")
+		// TODO: httpserver.Shutdown does not work yet
+		server.Shutdown(context.Background())
+		dataGateway.Shutdown()
+		log.Println("Server and data store shutdown gracefully")
+	}()
+	wg.Wait()
 	os.Exit(0)
 }

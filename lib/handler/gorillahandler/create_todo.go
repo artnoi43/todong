@@ -10,21 +10,23 @@ import (
 	"github.com/artnoi43/todong/datamodel"
 	"github.com/artnoi43/todong/enums"
 	"github.com/artnoi43/todong/internal"
+	"github.com/artnoi43/todong/lib/utils"
 )
 
 func (h *GorillaHandler) CreateTodo(w http.ResponseWriter, r *http.Request) {
+	respEncoder := json.NewEncoder(w)
 	file, _, err := r.FormFile("file")
 	if err != nil {
+		status := utils.ErrStatus(enums.MapErrHandler.MultipartError, err)
 		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte("here 2 " + err.Error()))
+		_ = respEncoder.Encode(status)
 		return
 	}
 	defer file.Close()
-	respEncoder := json.NewEncoder(w)
 	imgBuf := new(bytes.Buffer)
 	if _, err := io.Copy(imgBuf, file); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		respEncoder.Encode(map[string]interface{}{
+		_ = respEncoder.Encode(map[string]interface{}{
 			"status": "failed to read file",
 			"error":  err.Error(),
 		})
@@ -33,7 +35,7 @@ func (h *GorillaHandler) CreateTodo(w http.ResponseWriter, r *http.Request) {
 	jsonBody := r.FormValue("data")
 	if len(jsonBody) == 0 {
 		w.WriteHeader(http.StatusBadRequest)
-		respEncoder.Encode(map[string]interface{}{
+		_ = respEncoder.Encode(map[string]interface{}{
 			"status": "empty multipart/form-data key \"data\"",
 		})
 		return
@@ -41,10 +43,9 @@ func (h *GorillaHandler) CreateTodo(w http.ResponseWriter, r *http.Request) {
 
 	var req internal.TodoReqBody
 	if err := json.Unmarshal([]byte(jsonBody), &req); err != nil {
+		status := utils.ErrStatus(enums.MapErrHandler.Unmarshal, err)
 		w.WriteHeader(http.StatusBadRequest)
-		respEncoder.Encode(map[string]interface{}{
-			"status": "bad JSON body in multipart/form-data key \"data\"",
-		})
+		_ = respEncoder.Encode(status)
 		return
 	}
 	userUuid := r.Header.Get("iss")
@@ -52,7 +53,7 @@ func (h *GorillaHandler) CreateTodo(w http.ResponseWriter, r *http.Request) {
 	order, err := datamodel.NewTodo(userUuid, req.Title, req.Description, req.TodoDate, enums.Status(req.Status), imgBase64Str)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		respEncoder.Encode(map[string]interface{}{
+		_ = respEncoder.Encode(map[string]interface{}{
 			"status": "failed to create new todo (1)",
 			"error":  err.Error(),
 		})
@@ -60,7 +61,7 @@ func (h *GorillaHandler) CreateTodo(w http.ResponseWriter, r *http.Request) {
 	}
 	if err := h.dataGateway.CreateTodo(r.Context(), order); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		respEncoder.Encode(map[string]interface{}{
+		_ = respEncoder.Encode(map[string]interface{}{
 			"status": "failed to create new todo (2)",
 			"error":  err.Error(),
 		})
@@ -68,5 +69,5 @@ func (h *GorillaHandler) CreateTodo(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusCreated)
-	respEncoder.Encode(order)
+	_ = respEncoder.Encode(order)
 }

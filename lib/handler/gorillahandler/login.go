@@ -24,27 +24,27 @@ func (h *GorillaHandler) Login(w http.ResponseWriter, r *http.Request) {
 	if err := h.dataGateway.GetUserByUsername(ctx, req.Username, &user); err != nil {
 		if err != store.ErrRecordNotFound {
 			w.WriteHeader(http.StatusInternalServerError)
-			respEncoder.Encode(map[string]interface{}{
+			_ = respEncoder.Encode(map[string]interface{}{
 				"error": "login failed",
 			})
 			return
 		}
 		w.WriteHeader(http.StatusBadRequest)
-		respEncoder.Encode(map[string]interface{}{
+		_ = respEncoder.Encode(map[string]interface{}{
 			"error": "invalid username or password",
 		})
 		return
 	}
 	if user.UUID == "" {
 		w.WriteHeader(http.StatusBadRequest)
-		respEncoder.Encode(map[string]interface{}{
+		_ = respEncoder.Encode(map[string]interface{}{
 			"error": "invalid username or password",
 		})
 		return
 	}
 	if err := utils.DecodeBcrypt(user.Password, []byte(req.Password)); err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-		respEncoder.Encode(map[string]interface{}{
+		_ = respEncoder.Encode(map[string]interface{}{
 			"error": "invalid username or password",
 		})
 		return
@@ -52,7 +52,7 @@ func (h *GorillaHandler) Login(w http.ResponseWriter, r *http.Request) {
 	token, exp, err := utils.NewJwtToken(user.UUID, []byte(h.config.SecretKey))
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		respEncoder.Encode(map[string]interface{}{
+		_ = respEncoder.Encode(map[string]interface{}{
 			"error": "login failed",
 		})
 		return

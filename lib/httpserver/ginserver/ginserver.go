@@ -19,6 +19,7 @@ func New() *ginServer {
 	}
 }
 
+// TODO: fix Shutdown panic for Gin
 func (s *ginServer) Shutdown(ctx context.Context) {
 	s.Shutdown(ctx)
 }

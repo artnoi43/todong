@@ -18,9 +18,9 @@ func MapHandlers(
 	f *fiberhandler.FiberHandler,
 	m *gorillahandler.GorillaHandler,
 ) (
-	map[enums.Endpoint]func(*gin.Context),
-	map[enums.Endpoint]func(*fiber.Ctx) error,
-	map[enums.Endpoint]http.HandlerFunc,
+	map[enums.Endpoint]func(*gin.Context), // Map for Gin
+	map[enums.Endpoint]func(*fiber.Ctx) error, // Map for Fiber
+	map[enums.Endpoint]http.HandlerFunc, // Map for Gorilla
 ) {
 	MapGinHandlers := map[enums.Endpoint]func(*gin.Context){
 		enums.HandlerRegister:    g.Register,
@@ -44,10 +44,14 @@ func MapHandlers(
 		enums.HandlerDeleteUser:  f.DeleteUser,
 	}
 	MapGorillaHandlers := map[enums.Endpoint]http.HandlerFunc{
-		enums.HandlerRegister:   m.Register,
-		enums.HandlerLogin:      m.Login,
-		enums.HandlerCreateTodo: m.CreateTodo,
-		enums.HandlerGetTodo:    m.GetTodo,
+		enums.HandlerRegister:    m.Register,
+		enums.HandlerLogin:       m.Login,
+		enums.HandlerCreateTodo:  m.CreateTodo,
+		enums.HandlerGetTodo:     m.GetTodo,
+		enums.HandlerUpdateTodo:  m.UpdateTodo,
+		enums.HandlerDeleteTodo:  m.DeleteTodo,
+		enums.HandlerNewPassword: m.NewPassword,
+		enums.HandlerDeleteUser:  m.DeleteUser,
 	}
 	return MapGinHandlers, MapFiberHandlers, MapGorillaHandlers
 }

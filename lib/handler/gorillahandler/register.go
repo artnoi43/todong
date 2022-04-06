@@ -4,24 +4,28 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/google/uuid"
+
 	"github.com/artnoi43/todong/datamodel"
+	"github.com/artnoi43/todong/enums"
 	"github.com/artnoi43/todong/internal"
 	"github.com/artnoi43/todong/lib/utils"
-	"github.com/google/uuid"
 )
 
 func (h *GorillaHandler) Register(w http.ResponseWriter, r *http.Request) {
+	respEncoder := json.NewEncoder(w)
 	var req internal.AuthJson
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		status := utils.ErrStatus(enums.MapErrHandler.Unmarshal, err)
 		w.WriteHeader(http.StatusBadRequest)
+		_ = respEncoder.Encode(status)
 		return
 	}
 
-	respEncoder := json.NewEncoder(w)
 	// Also, return after calling this func
 	registerFailed := func() {
 		w.WriteHeader(http.StatusInternalServerError)
-		respEncoder.Encode(map[string]interface{}{
+		_ = respEncoder.Encode(map[string]interface{}{
 			"error": "register failed",
 		})
 	}
@@ -32,7 +36,7 @@ func (h *GorillaHandler) Register(w http.ResponseWriter, r *http.Request) {
 
 	if user.Username != "" {
 		w.WriteHeader(http.StatusBadRequest)
-		respEncoder.Encode(map[string]interface{}{
+		_ = respEncoder.Encode(map[string]interface{}{
 			"duplicate username": req.Username,
 		})
 		return
@@ -52,7 +56,7 @@ func (h *GorillaHandler) Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.WriteHeader(http.StatusCreated)
-	respEncoder.Encode(map[string]interface{}{
+	_ = respEncoder.Encode(map[string]interface{}{
 		"username": user.Username,
 		"userUuid": user.UUID,
 	})

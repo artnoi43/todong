@@ -28,14 +28,14 @@ func (h *GorillaHandler) GetTodo(w http.ResponseWriter, r *http.Request) {
 		}, &todos); err != nil {
 			if errors.Is(err, store.ErrRecordNotFound) {
 				w.WriteHeader(http.StatusNotFound)
-				respEncoder.Encode(map[string]interface{}{
+				_ = respEncoder.Encode(map[string]interface{}{
 					"status":   "todos not found",
 					"userUuid": userUuid,
 				})
 				return
 			}
 			w.WriteHeader(http.StatusInternalServerError)
-			respEncoder.Encode(map[string]interface{}{
+			_ = respEncoder.Encode(map[string]interface{}{
 				"status": "failed to find todo",
 				"uuid":   uuid,
 				"error":  err.Error(),
@@ -50,7 +50,7 @@ func (h *GorillaHandler) GetTodo(w http.ResponseWriter, r *http.Request) {
 		}, &todo); err != nil {
 			if errors.Is(err, store.ErrRecordNotFound) {
 				w.WriteHeader(http.StatusNotFound)
-				respEncoder.Encode(map[string]interface{}{
+				_ = respEncoder.Encode(map[string]interface{}{
 					"status": "todos not found",
 					"uuid":   uuid,
 					"error":  err.Error(),
@@ -58,7 +58,7 @@ func (h *GorillaHandler) GetTodo(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			w.WriteHeader(http.StatusInternalServerError)
-			respEncoder.Encode(map[string]interface{}{
+			_ = respEncoder.Encode(map[string]interface{}{
 				"status": "failed to find todo",
 				"uuid":   uuid,
 				"error":  err.Error(),
@@ -68,5 +68,5 @@ func (h *GorillaHandler) GetTodo(w http.ResponseWriter, r *http.Request) {
 		todos = append(todos, todo)
 	}
 	w.WriteHeader(http.StatusOK)
-	respEncoder.Encode(todos)
+	_ = respEncoder.Encode(todos)
 }
