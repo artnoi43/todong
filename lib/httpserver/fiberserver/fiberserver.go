@@ -17,7 +17,6 @@ func New() *fiberServer {
 	}
 }
 
-// TODO: Fix Shutdown panic for Fiber
 func (s *fiberServer) Shutdown(ctx context.Context) {
 	if err := s.app.Shutdown(); err != nil {
 		log.Printf("error shutting down fiber server: %s\n", err.Error())

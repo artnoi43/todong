@@ -62,7 +62,6 @@ func main() {
 		defer wg.Done()
 		<-sigChan
 		log.Println("Shutting down server and data store")
-		// TODO: httpserver.Shutdown does not work yet
 		server.Shutdown(context.Background())
 		dataGateway.Shutdown()
 		log.Println("Server and data store shutdown gracefully")

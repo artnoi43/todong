@@ -68,7 +68,6 @@ func (h *FiberHandler) UpdateTodo(c *fiber.Ctx) error {
 		})
 	}
 
-	// TODO: maybe abstract this whole mess
 	var u datamodel.Todo // Updated to-do
 	utils.UpdatedTodo(uuid, imgStrReq, &updatesReq, &targetTodo, &u)
 

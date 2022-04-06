@@ -39,8 +39,6 @@ func (s *gorillaServer) SetUpRoutes(conf *middleware.Config, h handler.Adaptor) 
 	todosApi.
 		HandleFunc("/create", h.Gorilla(enums.HandlerCreateTodo)).
 		Methods(http.MethodPost)
-	// TODO: fix GetTodo for Gorilla - now it is 404 at "/"
-	// so I register at "/all" instead for debugging
 	todosApi.
 		HandleFunc("/{uuid}", h.Gorilla(enums.HandlerGetTodo)).
 		Methods(http.MethodGet)

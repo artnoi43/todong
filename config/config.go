@@ -22,7 +22,6 @@ type Config struct {
 	Redis      redisclient.Config `mapstructure:"redis" yaml:"redis"`
 }
 
-// TODO: set defaults
 func LoadConfig(path string) (config *Config, err error) {
 	viper.AddConfigPath(path)
 	viper.SetConfigName("config")
