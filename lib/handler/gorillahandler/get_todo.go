@@ -67,6 +67,13 @@ func (h *GorillaHandler) GetTodo(w http.ResponseWriter, r *http.Request) {
 		}
 		todos = append(todos, todo)
 	}
+	if len(todos) == 0 {
+		w.WriteHeader(http.StatusNotFound)
+		respEncoder.Encode(map[string]interface{}{
+			"status": "todos not found",
+		})
+		return
+	}
 	w.WriteHeader(http.StatusOK)
 	_ = respEncoder.Encode(todos)
 }

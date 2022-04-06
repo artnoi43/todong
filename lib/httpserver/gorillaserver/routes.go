@@ -20,34 +20,34 @@ func (s *gorillaServer) SetUpRoutes(conf *middleware.Config, h handler.Adaptor) 
 
 	// /users
 	usersApi.
-		Handle("/register", h.Gorilla(enums.HandlerRegister)).
+		HandleFunc("/register", h.Gorilla(enums.HandlerRegister)).
 		Methods(http.MethodPost)
 	usersApi.
-		Handle("/login", h.Gorilla(enums.HandlerLogin)).
+		HandleFunc("/login", h.Gorilla(enums.HandlerLogin)).
 		Methods(http.MethodPost)
 	protectedUsersApi.
-		Handle("/", h.Gorilla(enums.HandlerDeleteUser)).
+		HandleFunc("/", h.Gorilla(enums.HandlerDeleteUser)).
 		Methods(http.MethodDelete)
 	protectedUsersApi.
-		Handle("/new-password", h.Gorilla(enums.HandlerNewPassword)).
+		HandleFunc("/new-password", h.Gorilla(enums.HandlerNewPassword)).
 		Methods(http.MethodPost)
 
 	// /todos
 	todosApi.
-		Handle("/create", h.Gorilla(enums.HandlerCreateTodo)).
+		HandleFunc("/", h.Gorilla(enums.HandlerGetTodo)).
+		Methods(http.MethodGet)
+	todosApi.
+		HandleFunc("/create", h.Gorilla(enums.HandlerCreateTodo)).
 		Methods(http.MethodPost)
 	// TODO: fix GetTodo for Gorilla - now it is 404 at "/"
 	// so I register at "/all" instead for debugging
 	todosApi.
-		Handle("/all", h.Gorilla(enums.HandlerGetTodo)).
+		HandleFunc("/{uuid}", h.Gorilla(enums.HandlerGetTodo)).
 		Methods(http.MethodGet)
 	todosApi.
-		Handle("/{uuid}", h.Gorilla(enums.HandlerGetTodo)).
-		Methods(http.MethodGet)
-	todosApi.
-		Handle("/{uuid}", h.Gorilla(enums.HandlerUpdateTodo)).
+		HandleFunc("/{uuid}", h.Gorilla(enums.HandlerUpdateTodo)).
 		Methods(http.MethodPost)
 	todosApi.
-		Handle("/{uuid}", h.Gorilla(enums.HandlerDeleteTodo)).
+		HandleFunc("/{uuid}", h.Gorilla(enums.HandlerDeleteTodo)).
 		Methods(http.MethodDelete)
 }
