@@ -50,6 +50,16 @@ func (h *GorillaHandler) CreateTodo(w http.ResponseWriter, r *http.Request) {
 	}
 	userUuid := r.Header.Get("iss")
 	imgBase64Str := base64.StdEncoding.EncodeToString(imgBuf.Bytes())
+	if l := len(imgBase64Str); l > enums.POSTGRES_MAX_STRLEN {
+		w.WriteHeader(http.StatusBadRequest)
+		_ = respEncoder.Encode(map[string]interface{}{
+			"status":        "file too large",
+			"file size":     l,
+			"max file size": enums.POSTGRES_MAX_STRLEN,
+		})
+		return
+	}
+
 	order, err := datamodel.NewTodo(userUuid, req.Title, req.Description, req.TodoDate, enums.Status(req.Status), imgBase64Str)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
