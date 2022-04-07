@@ -55,7 +55,7 @@ func (h *adapter) Gorilla(s enums.Endpoint) http.HandlerFunc {
 	return h.gorillaMap[s]
 }
 
-func NewAdaptor(t enums.ServerType, dataGateway store.DataGateway, conf *middleware.Config) Adaptor {
+func NewAdaptor(t enums.ServerType, conf *middleware.Config, dataGateway store.DataGateway) Adaptor {
 	var g *ginhandler.GinHandler
 	var f *fiberhandler.FiberHandler
 	var m *gorillahandler.GorillaHandler

@@ -31,8 +31,8 @@ func init() {
 		log.Fatalln("nil dataGateway")
 	}
 	// Init server and middleware
-	handlerAdaptor := handler.NewAdaptor(conf.Server, dataGateway, &conf.Middleware)
-	server = httpserver.New(conf.Server)
+	handlerAdaptor := handler.NewAdaptor(conf.ServerType, &conf.Middleware, dataGateway)
+	server = httpserver.New(conf.ServerType)
 	server.SetUpRoutes(&conf.Middleware, handlerAdaptor)
 }
 

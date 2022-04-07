@@ -15,7 +15,7 @@ import (
 
 type Config struct {
 	Address    string             `mapstructure:"listen_address" yaml:"port"`
-	Server     enums.ServerType   `mapstructure:"server" yaml:"server"`
+	ServerType enums.ServerType   `mapstructure:"server" yaml:"server"`
 	Store      enums.StoreType    `mapstructure:"store" yaml:"store"`
 	Middleware middleware.Config  `mapstructure:"middleware" yaml:"middleware"`
 	Postgres   postgres.Config    `mapstructure:"postgres" yaml:"postgres"`
