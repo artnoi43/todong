@@ -1,0 +1,16 @@
+listen_address: localhost:8000
+server: fiber # or gin, gorilla
+store: redis
+middleware:
+  secret_key: qwerty
+postgres:
+  host: localhost
+  port: 5432
+  user: postgres
+  password: postgres
+  name: postgres
+redis:
+  address:
+  username:
+  password:
+  db: 5
